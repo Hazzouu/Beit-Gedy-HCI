@@ -20,25 +20,29 @@
   A.child = el => { session.set({ role: 'parent', child: el.dataset.c }); render(); };
 
   R['parent/home'] = () => {
-    const st = store.get(); const c = child(); const L = { en: 'English', de: 'Deutsch', ar: 'العربية' }[st.parentLang];
+    const st = store.get(); const c = child(); const L = { en: 'English', de: 'Deutsch' }[st.parentLang] || 'English';
     const sw = `<p class="muted small">${P('Your children')}</p><div class="row">${['omar', 'lina'].map(k => `<button class="pill ${c === k ? 'on' : ''}" data-act="child" data-c="${k}">${k === 'omar' ? 'Omar · 4B' : 'Lina · 2A'}</button>`).join('')}</div>
       <a class="card row lang-row" href="#/parent/language"><span>🌐</span><div class="grow"><b>${P('App language')}: ${L}</b><small class="muted">${P('Exams stay in their own language (English or German).')}</small></div><span class="link">Change</span></a>`;
     if (c === 'lina') return shell(P('Home'), sw + `
-      <section class="card"><div class="row"><small class="muted grow">${P('Latest result')}</small>${chip('Checked by her teacher', 'green')}</div><b>Shapes · Math · exam in English</b><div class="stars small">⭐⭐⭐<span class="dim">⭐</span></div><small class="muted">3 of 4 stars – Lina sees stars instead of a mark (Grade 2).</small></section>
+      <section class="card"><div class="row"><small class="muted grow">${P('Latest result')}</small>${chip('Checked by Ms. Mona', 'green')}</div><b>Shapes · Math · exam in English</b><div class="row"><span class="grow">Circles</span><span class="stars small">⭐⭐⭐⭐⭐</span></div><div class="row"><span class="grow">Triangles</span><span class="stars small">⭐⭐<span class="dim">⭐⭐⭐</span></span></div><small class="muted">Lina sees stars instead of a mark (Grade 2).</small></section>
+      ${needs([['Math – triangles', true], ['Math – circles', false]])}
       <div class="ok">✅ ${P('No flags – nothing needs your attention.')}</div>
       <section class="card"><div class="row"><small class="muted grow">Take-home exam</small>${chip('Waiting for you', 'yellow')}</div><p>Lina is in Grade 2, so you take the photos with her on the home tablet.</p><button class="btn primary" data-act="helplina">Help Lina send it</button></section>
-      <section class="card"><div class="row"><small class="muted grow">${P('Practice at home')}</small>${chip(P('Done'), 'green')}</div><p>Play: tap the triangle (Shapes) · finished with 3 stars</p></section>
+      <section class="card"><div class="row"><small class="muted grow">${P('Practice at home')}</small>${chip(P('Done'), 'green')}</div><p>Play: tap the triangle (Shapes) · finished with 5 stars</p></section>
       <button class="btn secondary" data-act="psignout">${P('Sign out')}</button>`);
     if (!st.released) return shell(P('Home'), sw + `<section class="card"><div class="row"><small class="muted grow">${P('Latest result')}</small>${chip(P('Not released yet'), 'yellow')}</div><b>${DATA.exam.title} · Science</b><p class="muted">${P('The teacher is still checking this exam.')}</p></section>
       ${progress(false)}<p class="hint">${P('You only see results after the teacher has checked and released them.')}</p><button class="btn secondary" data-act="psignout">${P('Sign out')}</button>`);
     const flag = st.flag.status === 'confirmed';
     return shell(P('Home'), sw + `
       <section class="card"><div class="row"><small class="muted grow">${P('Latest result')}</small>${chip('Checked by Ms. Sara', 'green')}</div><b>${DATA.exam.title} · Science · exam in English</b><div class="score" dir="ltr">${fmt(totalScore())} / 10</div><small class="muted">+1 since the last Science quiz</small></section>
+      <section class="card"><div class="row"><small class="muted grow">Shapes · Math</small>${chip('Checked by Mr. Karim', 'green')}</div><div class="score" dir="ltr">9 / 10</div><small class="muted">+1 since the last Math quiz</small></section>
+      ${needs([['Science – food chains', flag], ['Math – shapes', false]])}
       ${progress(true)}
       ${flag ? `<section class="card flagcard">${chip(P('Needs support') + ' · confirmed by Ms. Sara', 'red')}<h3>Food chains</h3><p class="muted">Same mistake in two quizzes, also after office hours and a worksheet.</p><a class="btn primary" href="#/parent/note">${P('Teacher’s note and why')}</a></section>` : `<div class="ok">✅ ${P('No flags – nothing needs your attention.')}</div>`}
       <section class="card"><div class="row"><small class="muted grow">${P('Practice at home')}</small>${st.practice.done ? chip(P('Done'), 'green') : chip(P('Not done yet'), 'yellow')}</div><b>Food chains · 2 picture questions · due Friday</b><a class="btn secondary" href="#/parent/practice">${P('See the practice')}</a></section>
       <p class="hint">${P('You only see results after the teacher has checked and released them.')}</p><button class="btn secondary" data-act="psignout">${P('Sign out')}</button>`);
   };
+  function needs(rows) { return `<section class="card"><small class="muted">Needs more practice?</small>${rows.map(([l, y]) => `<div class="row"><span class="grow">${l}</span>${chip(y ? 'Yes' : 'No', y ? 'yellow' : 'green')}</div>`).join('')}</section>`; }
   function progress(withNew) {
     const rows = [['Weather · Sep', 6], ['Plants · Oct', 7]].concat(withNew ? [['Animals · Nov', totalScore()]] : []);
     return `<section class="card"><small class="muted">${P('Progress')} · Science</small>${rows.map(([l, v]) => `<div class="pbar"><span>${l}</span><i><b style="width:${v * 10}%"></b></i><span>${fmt(v)}/10</span></div>`).join('')}</section>`;
@@ -62,6 +66,6 @@
   A.openomar = () => { session.set({ role: 'student', id: 'omar' }); location.hash = '#/student/practice'; };
   R['parent/language'] = () => { const cur = store.get().parentLang;
     return shell(P('App language'), `<h2>Choose the language of the app</h2><p class="muted">This only changes the words in the parent view. Your children’s exams stay in the language they were written in (English or German), and their own screens follow their EN/DE switch.</p>
-      ${[['en', 'English'], ['de', 'Deutsch · German'], ['ar', 'العربية · Arabic']].map(([k, l]) => `<button class="card row option-row ${cur === k ? 'on' : ''}" data-act="plang" data-v="${k}"><b class="grow">${l}</b>${cur === k ? '✓' : ''}</button>`).join('')}`, '#/parent/home'); };
+      ${[['en', 'English'], ['de', 'Deutsch · German']].map(([k, l]) => `<button class="card row option-row ${cur === k ? 'on' : ''}" data-act="plang" data-v="${k}"><b class="grow">${l}</b>${cur === k ? '✓' : ''}</button>`).join('')}`, '#/parent/home'); };
   A.plang = el => { store.set({ parentLang: el.dataset.v }); location.hash = '#/parent/home'; };
 })();

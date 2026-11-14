@@ -61,5 +61,5 @@ window.DATA = {
     { q: 'What does a rabbit eat?', options: ['🥩 meat', '🌿 plants', '🐟 fish'], answer: 1, hint: 'Look at a rabbit’s flat teeth – they are for chewing plants.' },
     { q: 'Which comes first in a food chain?', options: ['🦊 fox', '🐇 rabbit', '🌱 grass'], answer: 2, hint: 'A food chain always starts with a plant.' }
   ],
-  lina: { exam: 'Shapes', subject: 'Math', stars: 3, of: 4 }
+  lina: { exam: 'Shapes', subject: 'Math', stars: 5, of: 5, teacher: 'Ms. Mona' }
 };

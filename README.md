@@ -41,7 +41,7 @@ All three views share one state in the browser's `localStorage`. Open the studen
 3. **Student** – Omar now sees **8 / 10**, his skills, the confirmed flag, **My mistakes** (with 🔊 read-aloud) and **Practice** (right/wrong feedback with hints).
 4. **Parent (phone)** – *Parent* → **Sign in**. You see only teacher-released results, the red flag with Ms. Sara’s note and the evidence, and whether practice is done.
    - Switch between children (Omar, Grade 4 / Lina, Grade 2).
-   - Choose the app language (English / Deutsch / العربية) separately from the exam language.
+   - Choose the app language (English / Deutsch) separately from the exam language.
 5. **Grade 1–2 child** – *Student* → **Lina** → **⭐ 🍎 🐱 🌳**. She gets stars instead of marks, big picture tiles, read-aloud and a picture game. Uploads go through a grown-up.
 
 Every screen has an **EN/DE** interface switch.
@@ -52,7 +52,7 @@ Every screen has an **EN/DE** interface switch.
 |---|---|
 | Student (tablet) | Picture-password sign-in; guided upload (checklist, camera frame, **real blur/darkness check**, “Is this page N?”, reorder/delete/add pages, confirm); status tracker; results only after release; mark and progress (Grades 3–5) or stars (Grades 1–2); mistakes with read-aloud; practice with hints; messages; “Ask teacher” |
 | Teacher (desktop) | Dashboard with per-child status and reminders; editable mark scheme; spotlight verification (scan next to the extracted text, edit, ask the student, request a new photo of one page); approve for grading; AI grade review with required override reasons; feedback editing; learning gaps per child and per class; “Why this flag?” evidence; confirm/dismiss red flags; log extra help; practice and comment; release checklist; student history |
-| Parent (phone, bonus) | Linked children with a switcher; display language (EN/DE/AR, right-to-left for Arabic); released results, progress and red flags only; teacher note and evidence; home practice status |
+| Parent (phone, bonus) | Linked children with a switcher; display language (EN/DE); released results in Science and Math, progress, red flags and “needs more practice: yes / no” only; teacher note and evidence; home practice status |
 | Across the system | Role-based sign-in; EN/DE interface; Science and Math; responsive layouts (tablet, desktop, phone); keyboard focus styles; reduced-motion support |
 
 ## Project structure
